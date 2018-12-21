@@ -3,15 +3,31 @@
  * Simple web server
  * */
 
-var express = require('express');
-var app = express();
+const express = require('express');
+const app = express();
 
-var handlebars = require('express-handlebars');
+// setup handlebars view engine
+const handlebars = require('express-handlebars');
 
-app.engine('handlebars', handlebars({
-    defaultLayout: 'main_logo'}));
+app.engine('handlebars', 
+	handlebars({defaultLayout: 'main'}));
 
 app.set('view engine', 'handlebars');
 
-// static resources
-app.use(express.static(_dirname + '/public'));
+// GET request to the homepage
+app.get('/', (req, res) => {
+	res.render('home');
+});
+
+app.get('/about', (req, res) => {
+	res.render('about');
+});
+
+app.use((req, res) => {
+	res.status(404);
+	res.render('404');
+});
+
+app.listen(3000, () => {
+  console.log('http://localhost:3000');
+});
